@@ -43,6 +43,28 @@ async function run() {
             res.json(result.insertedId);
         })
 
+        // Delete API 
+        app.delete('/users/:id', async (req, res) => {
+            const id = req.params;
+            const query = { _id: ObjectId(id) };
+            const result = await userCollection.deleteOne(query)
+            res.json(result)
+        })
+
+        //PUT API /Update db
+        app.put('/users/:id', async (req, res) => {
+            const id = req.params;
+            const query = { _id: ObjectId(id) }
+            const updateDoc = {
+                $set: {
+                    name: req.body.name,
+                    email: req.body.email,
+                }
+            }
+            const result = await userCollection.updateOne(query, updateDoc);
+            res.json(result);
+        })
+
     } finally {
         // Ensures that the client will close when you finish/error
         // await client.close();
